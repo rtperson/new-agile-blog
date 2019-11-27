@@ -7,7 +7,8 @@ task("default", ['lint', 'compile-ts'], function() {
 
 desc("lint all Typescript files");
 task("lint", async function() {
-    jake.exec("eslint ./src/*",function() {
+    const cmd = ["eslint"].concat(getSourceFileList()).join(" ");
+    jake.exec(cmd,function() {
         console.log("all files linted");
     }, {printStderr: true, printStdout: true })
 });
