@@ -16,18 +16,13 @@ User Stories:
 - An "about me" page
 
 
-A bit about build tool choice:
-- James Shore recommends the four following properties in a build tool
-    - Self documentation
-    - Command-line processing
-    - Dependency resolution
-    - Code, not configuration
-
-
 Engineering Tasks:
-- Continuous integration
+* Continuous integration
 - Server-side testing
 - Client-side testing
+
+Current tasks:
+- Set up VirtualBox with Ubuntu
 
 
 Grunt or Gulp or Jake or NPM
@@ -51,3 +46,10 @@ Grunt or Gulp or Jake or NPM
     + That said, Jake seems to carry less cruft with it on install.
 
 - Gulp just seems like a mess. Nobody who has used it extensively likes it.
+
+A bit about build tool choice:
+- James Shore recommends the four following properties in a build tool
+    - Self documentation
+    - Command-line processing
+    - Dependency resolution
+    - Code, not configuration

@@ -1,8 +1,16 @@
 const { task, desc } = require("jake");
+const rimraf = require("rimraf");
 
 desc("This is the default task");
 task("default", ['lint', 'compile-ts'], function() {
    console.log("hello world");
+});
+
+desc("Cleans all build files");
+task("clean", [], () => {
+    rimraf("dist", () => {
+        console.log("build files deleted")
+    })
 });
 
 desc("lint all Typescript files");
