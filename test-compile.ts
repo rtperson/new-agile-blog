@@ -1,5 +1,0 @@
-class TestCompile {
-
-}
-
-export { TestCompile }

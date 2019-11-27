@@ -23,7 +23,15 @@ A bit about build tool choice:
     - Dependency resolution
     - Code, not configuration
 
-- Grunt or Gulp or Jake or NPM
+
+Engineering Tasks:
+- Continuous integration
+- Server-side testing
+- Client-side testing
+
+
+Grunt or Gulp or Jake or NPM
+=============================================
 - NPM is all the rage right now, but for me it has the following drawbacks:
     - Practically impossible to build in dependencies on other tasks. Copy-paste hell takes a lot of work to avoid, unless
      you `task_1 && task_2` all over the place. It's simply going to be too easy to forget that task_42 also needs task_21 down the road.
@@ -37,17 +45,9 @@ A bit about build tool choice:
 - Jake has the following pros and cons
     - it seems to be broken right now on Windows 10
     - it has very low adoption in the industry
+    - does not support Promises (whaaaaat? This pushes the needle back heavily in the direction of Grunt)
+    - using ESLint in conjunction with Jake seems to require writing your own reporter
     + TypeScript support is being worked on, and may be available in a future release.
     + That said, Jake seems to carry less cruft with it on install.
 
 - Gulp just seems like a mess. Nobody who has used it extensively likes it.
-
-
-Engineering Tasks:
-- Get build tool set up (try Jake, for fun)
-- Get npm modules initialized and installed
-- Set up Git repo
-- Static code analysis
-- Continuous integration
-- Server-side testing
-- Client-side testing
