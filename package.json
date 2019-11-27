@@ -1,0 +1,11 @@
+{
+  "name": "new-agile-blog",
+  "version": "1.0.0",
+  "description": "A replacement for my other blog.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Roger Turnau",
+  "license": "MIT"
+}

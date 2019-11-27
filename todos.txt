@@ -1,0 +1,27 @@
+=====================
+The New Agile Blog
+=====================
+
+Minimum marketable features:
+- Blog Pages that render Markdown
+- A content management system for storing a list of blog entries
+- Additional content pages
+- Comments
+- A contact me page
+
+User Stories:
+- a "hello world" server
+- a "hello world" client
+- support multiple browsers
+- An "about me" page
+
+
+
+Engineering Tasks:
+- Get build tool set up (try Jake, for fun)
+- Get npm modules initialized and installed
+- Set up Git repo
+- Static code analysis
+- Continuous integration
+- Server-side testing
+- Client-side testing
