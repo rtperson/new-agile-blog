@@ -16,6 +16,32 @@ User Stories:
 - An "about me" page
 
 
+A bit about build tool choice:
+- James Shore recommends the four following properties in a build tool
+    - Self documentation
+    - Command-line processing
+    - Dependency resolution
+    - Code, not configuration
+
+- Grunt or Gulp or Jake or NPM
+- NPM is all the rage right now, but for me it has the following drawbacks:
+    - Practically impossible to build in dependencies on other tasks. Copy-paste hell takes a lot of work to avoid, unless
+     you `task_1 && task_2` all over the place. It's simply going to be too easy to forget that task_42 also needs task_21 down the road.
+    - No possibility of putting comments into JSON, which means your configuration will never be self-documenting
+    - Too inflexible.
+- Grunt has the following drawbacks
+    - Real danger of over-dependency on plugins written by someone else (one of my goals is to gain a deep understanding myself of the underlying technologies)
+    - Plugin quality is uneven
+    + wide adoption in industry
+    - Bottom line: I may just build all my own tasks in Grunt if I'm obliged to use it.
+- Jake has the following pros and cons
+    - it seems to be broken right now on Windows 10
+    - it has very low adoption in the industry
+    + TypeScript support is being worked on, and may be available in a future release.
+    + That said, Jake seems to carry less cruft with it on install.
+
+- Gulp just seems like a mess. Nobody who has used it extensively likes it.
+
 
 Engineering Tasks:
 - Get build tool set up (try Jake, for fun)
