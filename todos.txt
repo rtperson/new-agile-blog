@@ -22,7 +22,7 @@ Engineering Tasks:
 - Client-side testing
 
 Current tasks:
-- Set up VirtualBox with Ubuntu
+- get command line args working on CI server (e.g., jake and eslint)
 
 
 Grunt or Gulp or Jake or NPM
@@ -53,3 +53,10 @@ A bit about build tool choice:
     - Command-line processing
     - Dependency resolution
     - Code, not configuration
+
+
+One thing about Shore's Javascript advice:
+    - his linting task requires the user to build a reporter from scratch. This makes it very difficult to use another
+    linting tool (like eslint)
+
+Be careful with WebStorm's built-in bash terminal. Run your builds outside of WebStorm.
