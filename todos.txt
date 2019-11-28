@@ -21,7 +21,7 @@ Engineering Tasks:
 - Client-side testing
 
 Current tasks:
-- get command line args working on CI server (e.g., jake and eslint)
+- a "hello world" server
 
 
 Grunt or Gulp or Jake or NPM
