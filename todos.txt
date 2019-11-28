@@ -17,7 +17,6 @@ User Stories:
 
 
 Engineering Tasks:
-* Continuous integration
 - Server-side testing
 - Client-side testing
 
@@ -60,3 +59,4 @@ One thing about Shore's Javascript advice:
     linting tool (like eslint)
 
 Be careful with WebStorm's built-in bash terminal. Run your builds outside of WebStorm.
+Fixed my issues by adding a shell script for Ubuntu and a batch script for Windows.
