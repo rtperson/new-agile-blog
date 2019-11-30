@@ -5,7 +5,7 @@ const { jestCLI } = require("jest-cli");
 const jestConfig = require("./jest.config");
 
 desc("This is the default task");
-task("default", ['lint', 'compile-ts', 'test-server', 'coverage'], function() {
+task("default", ['lint', 'compile-ts', 'test-server'], function() {
    console.log("hello world");
    complete();
 }, true);
@@ -38,18 +38,10 @@ task("compile-ts", async function() {
 
 desc("run all server-side tests");
 task("test-server", () => {
-    jake.exec("jest", () => {
+    jake.exec("jest --coverage", () => {
         console.log("server tests completed");
         complete();
     }, {printStderr: true, printStdout: true });
-}, true);
-
-desc("check code coverage");
-task("coverage", () => {
-    jake.exec("jest --coverage", () => {
-       console.log("ran code coverage");
-       complete();
-    },  {printStderr: true, printStdout: true });
 }, true);
 
 function getSourceFileList() {
