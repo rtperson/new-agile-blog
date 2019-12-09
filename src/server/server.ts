@@ -15,4 +15,8 @@ export class Server {
             console.log("listening on port " + this.port);
         });
     }
+
+    stop() {
+        
+    }
 }
