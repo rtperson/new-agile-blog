@@ -7,7 +7,12 @@ module.exports = {
     ],
     parserOptions: {
         ecmaVersion: 6,
-        sourceType: "modules"
+        sourceType: "module",
+        ecmaFeatures: {
+            modules: true
+        }
     },
-    rules: {}
+    rules: {
+
+    }
 };

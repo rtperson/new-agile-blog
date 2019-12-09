@@ -10,7 +10,7 @@ Minimum marketable features:
 - A contact me page
 
 User Stories:
-- a "hello world" server
+* a "hello world" server
 - a "hello world" client
 - support multiple browsers
 - An "about me" page
@@ -21,7 +21,8 @@ Engineering Tasks:
 - Client-side testing
 
 Current tasks:
-- a "hello world" server
+- should be able to serve a page
+- should be able to serve a 404 error and custom 404 page
 
 
 Grunt or Gulp or Jake or NPM
