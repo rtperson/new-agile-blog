@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "module": "es6",
-    "target": "es6",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "target":  "es2017",
     "sourceMap": true,
     "noImplicitAny": true,
     "baseUrl": ".",
@@ -19,6 +21,7 @@
   ],
   "include": [
       "src/**/*",
-      "tests/**/*"
+      "tests/**/*",
+      "spike/**/*"
     ]
 }

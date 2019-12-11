@@ -8,9 +8,7 @@ describe("Server", () => {
         server = new Server();
     });
 
-    afterEach(() => {
-
-    });
+    afterEach(() => {});
 
     it("should be truthy", () => {
         expect(server).toBeTruthy();
@@ -18,6 +16,15 @@ describe("Server", () => {
 
     it("should serve a page", () => {
         server.start();
-        return request(server.app).get("/").expect(200);
+        request(server.app)
+            .get("/")
+            .expect(200);
+    });
+
+    it("should be able to stop the server", () => {
+        server.stop();
+        request(server.app)
+            .get("/")
+            .expect(500);
     });
 });

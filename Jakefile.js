@@ -37,7 +37,7 @@ desc("This is the TypeScript compilation task");
 task(
     "compile-ts",
     async function() {
-        const cmd = ["tsc"].concat(getSourceFileList()).join(" ");
+        const cmd = "tsc";
         console.log(cmd);
         jake.exec(
             cmd,
@@ -107,7 +107,9 @@ task("nodeVersion", [], function() {
 function parseNodeVersion(description, versionString) {
     const versionMatcher = /^v(\d+)\.(\d+)\.(\d+)$/; // v[major].[minor].[bugfix]
     const versionInfo = versionString.match(versionMatcher);
-    if (versionInfo === null) fail("Could not parse " + description + " (was '" + versionString + "')");
+    if (versionInfo === null) {
+        fail("Could not parse " + description + " (was '" + versionString + "')");
+    }
 
     const major = parseInt(versionInfo[1], 10);
     const minor = parseInt(versionInfo[2], 10);

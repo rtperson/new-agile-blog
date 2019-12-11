@@ -21,7 +21,7 @@ Engineering Tasks:
 - Client-side testing
 
 Current tasks:
-- should be able to serve a page
+- should be able to serve a page (almost)
 - should be able to serve a 404 error and custom 404 page
 
 
