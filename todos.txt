@@ -18,6 +18,8 @@ User Stories:
 
 Engineering Tasks:
 - Server-side testing
+- Need to find some way to shut down express server after tests are run
+- Refactor tests so that node can serve static page
 - Client-side testing
 
 Current tasks:
