@@ -14,17 +14,31 @@ describe("Server", () => {
         expect(server).toBeTruthy();
     });
 
-    it("should serve a page", () => {
-        server.start();
-        request(server.app)
-            .get("/")
-            .expect(200);
+    it("should serve a page", async () => {
+        server.start().then(done => {
+            request(server.app)
+                .get("/")
+                .expect(200)
+                .finally(() => {
+                    done();
+                });
+        });
     });
 
     it("should be able to stop the server", () => {
-        server.stop();
-        request(server.app)
-            .get("/")
-            .expect(500);
+        server.stop().then(async done => {
+            request(server.app)
+                .get("/")
+                .expect(500);
+            done();
+        });
+    });
+
+    afterAll(() => {
+        if (server) {
+            server.stop().then(async done => {
+                done();
+            });
+        }
     });
 });

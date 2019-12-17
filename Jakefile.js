@@ -56,7 +56,7 @@ task(
     "test-server",
     async () => {
         jake.exec(
-            "jest --coverage",
+            "jest --detectOpenHandles --forceExit --coverage",
             () => {
                 console.log("server tests completed");
                 complete();
