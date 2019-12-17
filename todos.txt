@@ -62,3 +62,12 @@ One thing about Shore's Javascript advice:
 
 Be careful with WebStorm's built-in bash terminal. Run your builds outside of WebStorm.
 Fixed my issues by adding a shell script for Ubuntu and a batch script for Windows.
+
+Jake seems wonky with async testing. Having to include --forceExit on the command line feels sloppy to me.
+Also, will our new server code actually work from the command line, or do we need to export a default function to run it?
+    - probably the latter.
+
+Experience so far:
+    - I like Typescript a lot. Haven't found much to complain about.
+    - I love enforcing lint rules up front. Code is much cleaner, and the Prettier layout keeps things very clean
+    - Using TDD has forced me to solve problems one at a time. It's much slower at this point

@@ -13,10 +13,8 @@ export class Server {
     }
 
     start(): Promise<any> {
-        return new Promise(() => {
-            this.localServer = this.app.listen(this.port, async () => {
-                //console.log("listening on port " + this.port);  //TODO: figure out best way to start server
-            });
+        return new Promise(async () => {
+            this.localServer = this.app.listen(this.port);
         });
     }
 

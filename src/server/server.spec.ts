@@ -15,11 +15,12 @@ describe("Server", () => {
     });
 
     it("should serve a page", async () => {
-        server.start().then(done => {
+        server.start().then(async done => {
             request(server.app)
                 .get("/")
                 .expect(200)
-                .finally(() => {
+                .end((err, res) => {
+                    if (err) return done(err);
                     done();
                 });
         });
