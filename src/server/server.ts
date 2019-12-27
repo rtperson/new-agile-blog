@@ -10,6 +10,15 @@ export class Server {
         this.app.get("/", (req, res) => {
             res.render("./index.html");
         });
+
+        this.app.get("/contact", (req, res) => {
+            res.render("./contact.html");
+        });
+
+        // define a custom page 404 error
+        this.app.use((req, res) => {
+            res.status(404).render("./not_found.html");
+        });
     }
 
     start(): Promise<any> {
