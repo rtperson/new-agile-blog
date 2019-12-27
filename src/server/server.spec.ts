@@ -8,7 +8,12 @@ describe("Server", () => {
         server = new Server();
     });
 
-    afterEach(() => {});
+    afterEach(async () => {
+        server.stop().then((done) => {
+            done();
+        });
+
+    });
 
     it("should be truthy", () => {
         expect(server).toBeTruthy();
@@ -19,6 +24,18 @@ describe("Server", () => {
             request(server.app)
                 .get("/")
                 .expect(200)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    done();
+                });
+        });
+    });
+
+    it("should serve a page that says Hello World", async () => {
+        server.start().then(async done => {
+            request(server.app)
+                .get("/")
+                .expect("Hello World, from your new Express Server")
                 .end((err, res) => {
                     if (err) return done(err);
                     done();
@@ -42,4 +59,5 @@ describe("Server", () => {
             });
         }
     });
+
 });
