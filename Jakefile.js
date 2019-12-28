@@ -122,6 +122,7 @@ function getSourceFileList() {
     const files = new fileList.FileList();
     files.include("src/**/*.ts");
     files.exclude("src/**/*.spec.ts");
+    files.exclude("src/client/**");
     files.exclude("node_modules");
     files.exclude("dist");
     return files.toArray();

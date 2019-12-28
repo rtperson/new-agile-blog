@@ -23,7 +23,7 @@ describe("Server", () => {
             request(server.app)
                 .get("/")
                 .expect(200)
-                .end((err, res) => {
+                .end(err => {
                     if (err) return done(err);
                     done();
                 });
@@ -35,7 +35,7 @@ describe("Server", () => {
             request(server.app)
                 .get("/")
                 .expect("Hello World, from your new Express Server")
-                .end((err, res) => {
+                .end(err => {
                     if (err) return done(err);
                     done();
                 });
@@ -47,7 +47,7 @@ describe("Server", () => {
             request(server.app)
                 .get("/randompagelklkjlk")
                 .expect(404)
-                .end((err, res) => {
+                .end(err => {
                     if (err) return done(err);
                     done();
                 });
@@ -59,7 +59,7 @@ describe("Server", () => {
             request(server.app)
                 .get("/randompagelklkjlk")
                 .expect(404)
-                .end((err, res) => {
+                .end(err => {
                     if (err) return done(err);
                     done();
                 });
@@ -72,7 +72,7 @@ describe("Server", () => {
                 .get("/contact")
                 .expect(200)
                 .expect("Hello from your new contact page")
-                .end((err, res) => {
+                .end(err => {
                     if (err) return done(err);
                     done();
                 });
