@@ -10,6 +10,7 @@
   "author": "Roger Turnau",
   "license": "MIT",
   "dependencies": {
+    "@types/chai": "^4.2.7",
     "express": "^4.17.1",
     "jest-runner-tsc": "^1.6.0"
   },

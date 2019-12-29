@@ -4,6 +4,8 @@
 const { task, desc } = require("jake");
 const fileList = require("filelist");
 const rimraf = require("rimraf");
+const Server = require("karma").Server;
+const runner = require("karma").runner;
 const NODE_VERSION = "v8.11.3";
 
 desc("This is the default task");
@@ -67,6 +69,11 @@ task(
     true,
 );
 
+desc("run all client-side tests");
+task("test-client", async () => {
+
+}, true);
+
 desc("Integrate");
 task("integrate", ["default"], function() {
     console.log("1. Make sure 'git status' is clean.");
@@ -103,6 +110,11 @@ task("nodeVersion", [], function() {
         failWithQualifier("exactly");
     }
 });
+
+function karmaStart(config, callback) {
+    const server = new Server(config, callback);
+    server.start();
+}
 
 function parseNodeVersion(description, versionString) {
     const versionMatcher = /^v(\d+)\.(\d+)\.(\d+)$/; // v[major].[minor].[bugfix]
