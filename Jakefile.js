@@ -23,7 +23,7 @@ desc("lint all Typescript files");
 task(
     "lint",
     async function() {
-        const cmd = ["eslint"].concat(getSourceFileList()).join(" ");
+        const cmd = ["eslint"].concat(getSourceFileServerList()).join(" ");
         jake.exec(
             cmd,
             () => {
@@ -69,10 +69,22 @@ task(
     true,
 );
 
+desc("lint all client code");
+task("lint-client", [], () => {
+
+});
+
 desc("run all client-side tests");
 task("test-client", async () => {
 
 }, true);
+
+desc("start Karma server for testing");
+task("karma", ["nodeVersion"], () => {
+    karmaRunner().start({
+        configFile: "karma.conf.js"
+    }, complete, fail);
+}, {async: true });
 
 desc("Integrate");
 task("integrate", ["default"], function() {
@@ -130,12 +142,16 @@ function parseNodeVersion(description, versionString) {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function getSourceFileList() {
+function getSourceFileServerList() {
     const files = new fileList.FileList();
     files.include("src/**/*.ts");
     files.exclude("src/**/*.spec.ts");
-    files.exclude("src/client/**");
+    //files.exclude("src/client/**");
     files.exclude("node_modules");
     files.exclude("dist");
     return files.toArray();
+}
+
+function karmaRunner() {
+    return require("simplebuild-karma");
 }
