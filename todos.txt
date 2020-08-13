@@ -17,8 +17,7 @@ User Stories:
 
 
 Engineering Tasks:
-- Run all server-side and client-side tests from Jake
-- Be able to stop Karma with Jake command
+- Capture karma-test output in Jake (right now output only appears in Karma server window) // FOR LATER - capturing and redirecting stdout not working
 
 
 Current tasks:

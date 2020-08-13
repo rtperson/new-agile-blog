@@ -4,10 +4,9 @@
 const { task, desc } = require("jake");
 const fileList = require("filelist");
 const rimraf = require("rimraf");
-// const Server = require("karma").Server;
-// const runner = require("karma").runner;
 const karma = require("simplebuild-karma");
 const NODE_VERSION = "v8.11.3";
+
 
 desc("This is the default task");
 task("default", ["lint", "nodeVersion", "compile-ts", "test-server", "karma-test"]);
@@ -128,21 +127,12 @@ task("karma", ["nodeVersion"], () => {
 
 desc("run Karma tests");
 task("karma-test", ["nodeVersion"], () => {
+
     karma.run({
-        configFile: "karma.conf.js"
+        configFile: "karma.conf.js",
        }, complete, fail);
-    }, {async: true });
+}, {async: true });
 
-desc("stop Karma server")
-task("karma-stop", [], () => {
-        karmaRunner.stop({
-                configFile: "karma.conf.js"
-        }, complete, fail);
-        }, {async: true });
-
-function karmaRunner() {
-    return require("simplebuild-karma");
-}
 
 function parseNodeVersion(description, versionString) {
     const versionMatcher = /^v(\d+)\.(\d+)\.(\d+)$/; // v[major].[minor].[bugfix]
@@ -166,8 +156,4 @@ function getSourceFileServerList() {
     files.exclude("node_modules");
     files.exclude("dist");
     return files.toArray();
-}
-
-function karmaRunner() {
-    return require("simplebuild-karma");
 }

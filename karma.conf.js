@@ -25,7 +25,7 @@ module.exports = function(config) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ["progress", "karma-typescript"],
+        reporters: ["progress", "karma-typescript", "mocha", "coverage"],
 
         // web server port
         port: 9876,
@@ -50,7 +50,9 @@ module.exports = function(config) {
                 "karma-edge-launcher",
                 "karma-typescript",
                 "karma-mocha",
-                "karma-chai"
+                "karma-chai",
+                "karma-coverage",
+                "karma-mocha-reporter"
         ],
 
         // Continuous Integration mode
@@ -60,6 +62,10 @@ module.exports = function(config) {
         // Concurrency level
         // how many browser should be started simultaneous
         concurrency: Infinity,
+
+        loggers: [
+            { type: 'console' }
+        ],
 
         karmaTypescriptConfig: {
             compilerOptions: {
