@@ -4,12 +4,13 @@
 const { task, desc } = require("jake");
 const fileList = require("filelist");
 const rimraf = require("rimraf");
-const Server = require("karma").Server;
-const runner = require("karma").runner;
+// const Server = require("karma").Server;
+// const runner = require("karma").runner;
+const karma = require("simplebuild-karma");
 const NODE_VERSION = "v8.11.3";
 
 desc("This is the default task");
-task("default", ["lint", "nodeVersion", "compile-ts", "test-server"]);
+task("default", ["lint", "nodeVersion", "compile-ts", "test-server", "karma-test"]);
 
 desc("Cleans all build files");
 task("clean", [], () => {
@@ -79,12 +80,7 @@ task("test-client", async () => {
 
 }, true);
 
-desc("start Karma server for testing");
-task("karma", ["nodeVersion"], () => {
-    karmaRunner().start({
-        configFile: "karma.conf.js"
-    }, complete, fail);
-}, {async: true });
+
 
 desc("Integrate");
 task("integrate", ["default"], function() {
@@ -123,9 +119,29 @@ task("nodeVersion", [], function() {
     }
 });
 
-function karmaStart(config, callback) {
-    const server = new Server(config, callback);
-    server.start();
+desc("start Karma server for testing");
+task("karma", ["nodeVersion"], () => {
+    karma.start({
+        configFile: "karma.conf.js"
+    }, complete, fail);
+}, {async: true });
+
+desc("run Karma tests");
+task("karma-test", ["nodeVersion"], () => {
+    karma.run({
+        configFile: "karma.conf.js"
+       }, complete, fail);
+    }, {async: true });
+
+desc("stop Karma server")
+task("karma-stop", [], () => {
+        karmaRunner.stop({
+                configFile: "karma.conf.js"
+        }, complete, fail);
+        }, {async: true });
+
+function karmaRunner() {
+    return require("simplebuild-karma");
 }
 
 function parseNodeVersion(description, versionString) {

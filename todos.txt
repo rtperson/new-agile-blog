@@ -17,9 +17,9 @@ User Stories:
 
 
 Engineering Tasks:
-- Server-side testing
-- Refactor static pages to /views directory
-- Test that content of served hello world page actually says hello world.
+- Run all server-side and client-side tests from Jake
+- Be able to stop Karma with Jake command
+
 
 Current tasks:
 - should be able to serve a 404 error and custom 404 page
