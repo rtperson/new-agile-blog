@@ -3,20 +3,19 @@
 
 const { task, desc } = require("jake");
 const fileList = require("filelist");
-const rimraf = require("rimraf");
+const rmfr = require('rmfr');
 const karma = require("simplebuild-karma");
-const NODE_VERSION = "v8.11.3";
-
+// const NODE_VERSION = "v8.11.3";
+const NODE_VERSION = "v12.14.0";
 
 desc("This is the default task");
-task("default", ["lint", "nodeVersion", "compile-ts", "test-server", "karma-test"]);
+task("default", ["lint", "nodeVersion", "compile-ts", "copy-views", "test-server", "karma-test"]);
 
 desc("Cleans all build files");
 task("clean", [], () => {
-    rimraf("dist", () => {
-        console.log("build files deleted");
-        complete();
-    });
+    (async () => await rmfr("dist"))()
+        .then(() => { console.log("build files deleted") })
+        .then(() => { complete(); });
 });
 
 desc("lint all Typescript files");
@@ -53,9 +52,48 @@ task(
     true,
 );
 
+
+desc("Copy all views to dist folder");
+task("copy-views", ["compile-ts"], async () => {
+    const fs = require('fs-extra');
+    const path = require('path');
+
+    const destDir = "./dist/src/views/";
+    fs.ensureDir(destDir)
+        .then(() => {
+            console.log('success!')
+        })
+        .catch(err => {
+            console.error(err)
+        });
+
+
+
+    // rmfr(destDir).then(async () => { fs.mkdirSync("./dist"); })
+    //     .then(async () => { fs.mkdirSync("./dist/src/"); })
+    //     .then(async () => { fs.mkdirSync("./dist/src/views/"); })
+
+
+
+
+    // if (!destDir.isDirectory) {
+
+        // await fs.mkdirSync(destDir, 744);
+    // }
+    getViewFilesList().forEach((file) => {
+        fs.copy(file, destDir + path.basename(file), err => {
+            if (err) throw err;
+            console.log('File was copied to destination');
+        });
+        // console.log(path.basename(file));
+    });
+
+})
+
 desc("run all server-side tests");
 task(
     "test-server",
+    ["lint", "nodeVersion", "compile-ts", "copy-views"],
     async () => {
         jake.exec(
             "jest --detectOpenHandles --forceExit --coverage",
@@ -68,16 +106,6 @@ task(
     },
     true,
 );
-
-desc("lint all client code");
-task("lint-client", [], () => {
-
-});
-
-desc("run all client-side tests");
-task("test-client", async () => {
-
-}, true);
 
 
 
@@ -127,7 +155,6 @@ task("karma", ["nodeVersion"], () => {
 
 desc("run Karma tests");
 task("karma-test", ["nodeVersion"], () => {
-
     karma.run({
         configFile: "karma.conf.js",
        }, complete, fail);
@@ -156,4 +183,15 @@ function getSourceFileServerList() {
     files.exclude("node_modules");
     files.exclude("dist");
     return files.toArray();
+}
+
+function getViewFilesList() {
+    const files = new fileList.FileList();
+    files.include("src/views/**/*");
+    return files.toArray();
+}
+
+async function deleteDir(dir) {
+    rmfr(dir)
+        .then(() => { console.log("directory deleted: " + dir) })
 }

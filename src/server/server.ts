@@ -8,16 +8,16 @@ export class Server {
     constructor() {
         // define a "hello world" handler for default page
         this.app.get("/", (req, res) => {
-            res.render("./index.html");
+            res.render("../views/index.html");
         });
 
         this.app.get("/contact", (req, res) => {
-            res.render("./contact.html");
+            res.render("../views/contact.html");
         });
 
         // define a custom page 404 error
         this.app.use((req, res) => {
-            res.status(404).render("./not_found.html");
+            res.status(404).render("../views/not_found.html");
         });
     }
 

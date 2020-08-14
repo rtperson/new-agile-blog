@@ -18,7 +18,7 @@ describe("Server", () => {
         expect(server).toBeTruthy();
     });
 
-    it("should serve a page", async () => {
+    it("should serve a page",  () => {
         server.start().then(async done => {
             request(server.app)
                 .get("/")
@@ -31,12 +31,12 @@ describe("Server", () => {
     });
 
     it("should serve a page that says Hello World", async () => {
-        server.start().then(async done => {
+        server.start().then(done => {
             request(server.app)
                 .get("/")
                 .expect("Hello World, from your new Express Server")
                 .end(err => {
-                    if (err) return done(err);
+                    if (err) return fail(err);
                     done();
                 });
         });
@@ -48,7 +48,7 @@ describe("Server", () => {
                 .get("/randompagelklkjlk")
                 .expect(404)
                 .end(err => {
-                    if (err) return done(err);
+                    if (err) return fail(err);
                     done();
                 });
         });
@@ -58,9 +58,11 @@ describe("Server", () => {
         server.start().then(async done => {
             request(server.app)
                 .get("/randompagelklkjlk")
-                .expect(404)
+                .expect(200, err => {
+                    done();
+                })
                 .end(err => {
-                    if (err) return done(err);
+                    if (err) return fail(err);
                     done();
                 });
         });
@@ -73,7 +75,7 @@ describe("Server", () => {
                 .expect(200)
                 .expect("Hello from your new contact page")
                 .end(err => {
-                    if (err) return done(err);
+                    if (err) return fail(err);
                     done();
                 });
         });

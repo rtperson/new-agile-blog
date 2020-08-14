@@ -69,3 +69,11 @@ Experience so far:
     - I like Typescript a lot. Haven't found much to complain about.
     - I love enforcing lint rules up front. Code is much cleaner, and the Prettier layout keeps things very clean
     - Using TDD has forced me to solve problems one at a time. It's much slower at this point
+
+My life is a hollow lie:
+    - I tried moving my HTML files, and realized that every single one of my express tests is passing when they
+    should fail. FML. My big discovery today is that all the work I did getting ExpressJS working in Typescript
+    was a big waste of time and will need to be entirely redone.
+    - Lesson learned: get Express working in Node before you let a framework like Supertest jerk you around.
+    - Possible culprits: Jest, Supertest, Promises, async...
+    - either way, it's back to the drawing board with all my server code. Nice.
