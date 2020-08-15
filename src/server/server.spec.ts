@@ -1,100 +1,47 @@
-import { Server } from "./server";
 import request from "supertest";
+import { Express } from "express";
+import { newApp } from "./app";
 
 describe("Server", () => {
-    let server: Server;
+    let app: Express;
 
     beforeEach(async () => {
-        server = new Server();
+        app = newApp();
     });
 
     afterEach(async () => {
-        server.stop().then(done => {
-            done();
-        });
     });
 
     it("should be truthy", () => {
-        expect(server).toBeTruthy();
+        expect(app).toBeTruthy();
     });
 
-    it("should serve a page",  () => {
-        server.start().then(async done => {
-            request(server.app)
-                .get("/")
-                .expect(200)
-                .end(err => {
-                    if (err) return done(err);
-                    done();
-                });
-        });
+    it ("should respond with a 200 response code", () => {
+       return request(app)
+           .get("/")
+           .expect(200);
     });
 
-    it("should serve a page that says Hello World", async () => {
-        server.start().then(done => {
-            request(server.app)
-                .get("/")
-                .expect("Hello World, from your new Express Server")
-                .end(err => {
-                    if (err) return fail(err);
-                    done();
-                });
-        });
+    it ("should have specific text in its body", async () => {
+        const result = await request(app).get("/");
+        expect(result.text).toContain("Hello World, from your new Express Server");
     });
 
     it("should return a 404 error if page not found", async () => {
-        server.start().then(async done => {
-            request(server.app)
-                .get("/randompagelklkjlk")
-                .expect(404)
-                .end(err => {
-                    if (err) return fail(err);
-                    done();
-                });
-        });
+        const result = await request(app).get("/randompagellkjlkjsfkljl");
+        expect(result.status).toEqual(404);
     });
 
     it("should return a custom 404 page", async () => {
-        server.start().then(async done => {
-            request(server.app)
-                .get("/randompagelklkjlk")
-                .expect(200, err => {
-                    done();
-                })
-                .end(err => {
-                    if (err) return fail(err);
-                    done();
-                });
-        });
+        const result = await request(app).get("/randompagellkjlkjsfkljl");
+        expect(result.text).toContain("Sorry, that page cannot be found");
     });
 
     it("should serve a custom contact page", async () => {
-        server.start().then(async done => {
-            request(server.app)
-                .get("/contact")
-                .expect(200)
-                .expect("Hello from your new contact page")
-                .end(err => {
-                    if (err) return fail(err);
-                    done();
-                });
-        });
-    });
-
-    it("should be able to stop the server", () => {
-        server.stop().then(async done => {
-            request(server.app)
-                .get("/")
-                .expect(500);
-            done();
-        });
+        const result = await request(app).get("/contact");
+        expect(result.text).toContain("Hello from your new contact page");
     });
 
     afterAll(() => {
-        if (server) {
-            server.stop().then(async done => {
-                done();
-            });
-        }
     });
 });
