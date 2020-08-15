@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1597449618687" clover="3.2.0">
-  <project timestamp="1597449618687" name="All files">
+<coverage generated="1597464324021" clover="3.2.0">
+  <project timestamp="1597464324021" name="All files">
     <metrics statements="15" coveredstatements="15" conditionals="2" coveredconditionals="1" methods="4" coveredmethods="4" elements="21" coveredelements="20" complexity="0" loc="15" ncloc="15" packages="1" files="1" classes="1"/>
     <file name="app.ts" path="C:\Users\Roger\projects\javascript\new-agile-blog\src\server\app.ts">
       <metrics statements="15" coveredstatements="15" conditionals="2" coveredconditionals="1" methods="4" coveredmethods="4"/>
