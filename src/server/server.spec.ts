@@ -5,7 +5,7 @@ import http from "http";
 
 describe("Server", () => {
     let app: Express;
-    let server: http.Server, agent: request.SuperTest<any>;
+    let server: http.Server, agent: request.SuperTest<request.Test>;
 
     beforeEach((done) => {
         app = newApp();
@@ -23,6 +23,11 @@ describe("Server", () => {
 
     it("should be truthy", () => {
         expect(app).toBeTruthy();
+    });
+
+    it("should be listening on defined port", () => { 
+        const port = app.get("port");
+        expect(port).toEqual("8081");
     });
 
     it ("should respond with a 200 response code", () => {

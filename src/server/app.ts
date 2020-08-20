@@ -1,8 +1,10 @@
 import express from "express";
 import { Express } from "express";
 import path from "path";
+import dotenv from "dotenv";
 
-const PORT = 8081;
+dotenv.config();
+const PORT = process.env.PORT;
 
 export function newApp(): Express {
     const app = express();
