@@ -11,7 +11,7 @@ module.exports = function(config) {
         frameworks: ["mocha", "chai", "karma-typescript"],
 
         // list of files / patterns to load in the browser
-        files: ["src/client/**/*.spec.ts"],
+        files: ["src/client/**/*.ts"],
 
         // list of files / patterns to exclude
         exclude: [],

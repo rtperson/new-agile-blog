@@ -11,7 +11,9 @@ export function newApp(): Express {
 
     app.set("port", PORT || 3000);
     app.set("views", path.join(__dirname, "../views"));
+    app.set("client", path.join(__dirname, "../client"));
     app.set("view engine", "ejs");
+    app.use(express.static("public"));
 
     app.get("/", (_, res: express.Response) => {
         res.render("index");
