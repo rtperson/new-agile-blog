@@ -1,3 +1,3 @@
-export function startRotate() {
-    document.getElementsByClassName("circle").item(0).className += " start-rotate";
+export function startRotate(): void {
+    document.getElementsByClassName("circle").item(0).className = "circle start-rotate";
 }

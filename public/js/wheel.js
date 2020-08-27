@@ -1,7 +1,8 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+
 function startRotate() {
-    document.getElementsByClassName("circle").item(0).className += " start-rotate";
-    setTimeout();
+    document.getElementsByClassName("circle").item(0).className = "circle start-rotate";
+    setTimeout(() => {
+        document.getElementsByClassName("circle").item(0).className = "circle start-rotate stop-rotate";
+    }, Math.floor(Math.random() * 10000) + 200);
 }
-exports.startRotate = startRotate;

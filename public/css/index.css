@@ -159,3 +159,7 @@ li {
         transform: rotate(360deg);
     }
 }
+
+.stop-rotate {
+    animation-play-state: paused;
+}

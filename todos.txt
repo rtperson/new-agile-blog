@@ -18,7 +18,10 @@ User Stories:
 
 Engineering Tasks:
 - Capture karma-test output in Jake (right now output only appears in Karma server window) // FOR LATER - capturing and redirecting stdout not working
-- Move server environment variables to .env file
+- Integrate JS and HTML template so that you don't need static JS files (not particularly testable)
+    - look at tutorial about how to build MVC in Express
+* Move server environment variables to .env file
+-
 
 
 Current tasks:
