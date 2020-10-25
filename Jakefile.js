@@ -4,12 +4,11 @@
 const { task, desc } = require("jake");
 const fileList = require("filelist");
 const rmfr = require('rmfr');
-const karma = require("simplebuild-karma");
 // const NODE_VERSION = "v8.11.3";
 const NODE_VERSION = "v12.14.0";
 
 desc("This is the default task");
-task("default", ["lint", "nodeVersion", "compile-ts", "copy-views", "test-server", "karma-test"]);
+task("default", ["lint", "nodeVersion", "compile-ts", "copy-views", "test-server"]);
 
 desc("Cleans all build files");
 task("clean", [], () => {
@@ -145,21 +144,6 @@ task("nodeVersion", [], function() {
         failWithQualifier("exactly");
     }
 });
-
-desc("start Karma server for testing");
-task("karma", ["nodeVersion"], () => {
-    karma.start({
-        configFile: "karma.conf.js"
-    }, complete, fail);
-}, {async: true });
-
-desc("run Karma tests");
-task("karma-test", ["nodeVersion"], () => {
-    karma.run({
-        configFile: "karma.conf.js",
-       }, complete, fail);
-}, {async: true });
-
 
 function parseNodeVersion(description, versionString) {
     const versionMatcher = /^v(\d+)\.(\d+)\.(\d+)$/; // v[major].[minor].[bugfix]

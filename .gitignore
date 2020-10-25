@@ -2,3 +2,6 @@
 dist/*
 .env
 coverage/*
+
+# stryker temp files
+.stryker-tmp

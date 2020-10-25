@@ -21,7 +21,7 @@ Engineering Tasks:
 - Integrate JS and HTML template so that you don't need static JS files (not particularly testable)
     - look at tutorial about how to build MVC in Express
 * Move server environment variables to .env file
--
+- Replace Karma with Cypress?
 
 
 Current tasks:
@@ -82,3 +82,19 @@ My life is a hollow lie:
     - Lesson learned: get Express working in Node before you let a framework like Supertest jerk you around.
     - Possible culprits: Jest, Supertest, Promises, async...
     - either way, it's back to the drawing board with all my server code. Nice.
+
+Karma or Cypress?
+    Problems with Karma so far:
+    - difficult to redirect Karma server output to Jake
+    - need to mock entire DOM in order to test client-side DOM manipulation
+
+    At the end of the day, I feel like I'm spending an inordinate amount of my development time wrestling with Karma.
+    Ideally, I'd like to spend that time on the problem domain, not wrestling with tooling.
+    I don't know enough about Cypress to know how it solves these problems, but I'd like to experiment with it
+    to see if it's easier to work with.
+
+
+    Engineering problem so far:
+        - Creating a controller so I can bundle HTML/JS/images together rather than having to define a million static links
+          between them.
+

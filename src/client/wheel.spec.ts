@@ -1,5 +1,5 @@
-import * as chai from 'chai';
-import * as wheel from './wheel';
+import * as chai from "chai";
+import * as wheel from "./wheel";
 
 const expect = chai.expect;
 
