@@ -12,7 +12,6 @@ const shorthands = {
   c: 'config',
   s: 'search',
   se: 'search',
-  unstar: 'star', // same function
   tst: 'test',
   t: 'test',
   ddp: 'dedupe',
@@ -88,6 +87,7 @@ const cmdList = [
   'publish',
   'star',
   'stars',
+  'unstar',
   'adduser',
   'login', // This is an alias for `adduser` but it can be confusing
   'logout',
@@ -119,6 +119,7 @@ const cmdList = [
   'prefix',
   'bin',
   'whoami',
+  'diff',
   'dist-tag',
   'ping',
 
@@ -127,6 +128,7 @@ const cmdList = [
   'start',
   'restart',
   'run-script',
+  'set-script',
   'completion',
   'doctor',
   'exec',
@@ -134,10 +136,25 @@ const cmdList = [
 ]
 
 const plumbing = ['birthday', 'help-search']
+
+// these commands just shell out to something else or handle the
+// error themselves, so it's confusing and weird to write out
+// our full error log banner when they exit non-zero
+const shellouts = [
+  'exec',
+  'run-script',
+  'test',
+  'start',
+  'stop',
+  'restart',
+  'birthday',
+]
+
 module.exports = {
   aliases: Object.assign({}, shorthands, affordances),
   shorthands,
   affordances,
   cmdList,
   plumbing,
+  shellouts,
 }

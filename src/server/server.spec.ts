@@ -53,6 +53,4 @@ describe("Server", () => {
         const result = await agent.get("/contact");
         expect(result.text).toContain("Hello from your new contact page");
     });
-
-    afterAll(() => {});
 });

@@ -4,17 +4,15 @@
 const { task, desc } = require("jake");
 const fileList = require("filelist");
 const rmfr = require('rmfr');
-// const NODE_VERSION = "v8.11.3";
-const NODE_VERSION = "v12.14.0";
+const NODE_VERSION = "v14.15.0";
 
 desc("This is the default task");
-task("default", ["lint", "nodeVersion", "compile-ts", "copy-views", "test-server"]);
+task("default", ["lint", "nodeVersion", "compile-ts", "compile-cypress-ts", "test-server"]);
 
 desc("Cleans all build files");
 task("clean", [], () => {
     (async () => await rmfr("dist"))()
         .then(() => { console.log("build files deleted") })
-        .then(() => { complete(); });
 });
 
 desc("lint all Typescript files");
@@ -43,7 +41,6 @@ task(
             cmd,
             () => {
                 console.log("typescript compilation completed");
-                complete();
             },
             { printStderr: true, printStdout: true },
         );
@@ -52,53 +49,32 @@ task(
 );
 
 
-desc("Copy all views to dist folder");
-task("copy-views", ["compile-ts"], async () => {
-    const fs = require('fs-extra');
-    const path = require('path');
-
-    const destDir = "./dist/src/views/";
-    fs.ensureDir(destDir)
-        .then(() => {
-            console.log('success!')
-        })
-        .catch(err => {
-            console.error(err)
-        });
-
-
-
-    // rmfr(destDir).then(async () => { fs.mkdirSync("./dist"); })
-    //     .then(async () => { fs.mkdirSync("./dist/src/"); })
-    //     .then(async () => { fs.mkdirSync("./dist/src/views/"); })
-
-
-
-
-    // if (!destDir.isDirectory) {
-
-        // await fs.mkdirSync(destDir, 744);
-    // }
-    getViewFilesList().forEach((file) => {
-        fs.copy(file, destDir + path.basename(file), err => {
-            if (err) throw err;
-            console.log('File was copied to destination');
-        });
-        // console.log(path.basename(file));
-    });
-
-})
+desc("This is the Cypress TypeScript compilation task");
+task(
+    "compile-cypress-ts",
+    async function() {
+        const cmd = "tsc --project cypress/tsconfig.json";
+        console.log(cmd);
+        jake.exec(
+            cmd,
+            () => {
+                console.log("Cypress typescript compilation completed");
+            },
+            { printStderr: true, printStdout: true },
+        );
+    },
+    true,
+);
 
 desc("run all server-side tests");
 task(
     "test-server",
-    ["lint", "nodeVersion", "compile-ts", "copy-views"],
+    ["lint", "nodeVersion", "compile-ts"],
     async () => {
         jake.exec(
             "jest --detectOpenHandles --forceExit --coverage",
             () => {
                 console.log("server tests completed");
-                complete();
             },
             { printStderr: true, printStdout: true },
         );
@@ -162,20 +138,10 @@ function parseNodeVersion(description, versionString) {
 function getSourceFileServerList() {
     const files = new fileList.FileList();
     files.include("src/**/*.ts");
-    files.exclude("src/**/*.spec.ts");
-    //files.exclude("src/client/**");
+    files.include("cypress/**/*.ts");
+    // files.exclude("src/**/*.spec.ts");
     files.exclude("node_modules");
-    files.exclude("dist");
     return files.toArray();
 }
 
-function getViewFilesList() {
-    const files = new fileList.FileList();
-    files.include("src/views/**/*");
-    return files.toArray();
-}
 
-async function deleteDir(dir) {
-    rmfr(dir)
-        .then(() => { console.log("directory deleted: " + dir) })
-}
