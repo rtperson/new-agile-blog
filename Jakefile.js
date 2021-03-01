@@ -68,10 +68,11 @@ desc("run all client-side tests");
 task(
     "test-client",
     ["lint", "nodeVersion", "compile-ts"],
+    {concurrency: 2},
     async () => {
         let browsers = ["chrome", "edge"];
         browsers.forEach(browser => {
-            setTimeout(() => {
+            return new Promise((resolve, reject) => {
                 jake.exec(
                     "cypress run -b " + browser,
                     () => {
@@ -79,8 +80,7 @@ task(
                     },
                     { printStderr: true, printStdout: true },
                 );
-            }, 10000);
-
+            });
         });
     },
     true,
