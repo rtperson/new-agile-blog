@@ -48,24 +48,6 @@ task(
     true,
 );
 
-
-desc("This is the Cypress TypeScript compilation task");
-task(
-    "compile-cypress-ts",
-    async function() {
-        const cmd = "tsc --project cypress/tsconfig.json";
-        console.log(cmd);
-        jake.exec(
-            cmd,
-            () => {
-                console.log("Cypress typescript compilation completed");
-            },
-            { printStderr: true, printStdout: true },
-        );
-    },
-    true,
-);
-
 desc("run all server-side tests");
 task(
     "test-server",
@@ -81,6 +63,30 @@ task(
     },
     true,
 );
+
+desc("run all client-side tests");
+task(
+    "test-client",
+    ["lint", "nodeVersion", "compile-ts"],
+    async () => {
+        let browsers = ["chrome", "edge"];
+        browsers.forEach(browser => {
+            setTimeout(() => {
+                jake.exec(
+                    "cypress run -b " + browser,
+                    () => {
+                        console.log(browser + " tests completed");
+                    },
+                    { printStderr: true, printStdout: true },
+                );
+            }, 10000);
+
+        });
+    },
+    true,
+);
+
+
 
 
 

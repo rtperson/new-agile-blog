@@ -25,7 +25,7 @@ Engineering Tasks:
 
 
 Current tasks:
-- should be able to serve a 404 error and custom 404 page
+- Get Cypress Chalk error to resolve (or fall back to deprecate TS in Cypress)
 
 
 Grunt or Gulp or Jake or NPM
@@ -92,6 +92,16 @@ Karma or Cypress?
     Ideally, I'd like to spend that time on the problem domain, not wrestling with tooling.
     I don't know enough about Cypress to know how it solves these problems, but I'd like to experiment with it
     to see if it's easier to work with.
+
+    Now that I've tried Cypress, I'm not sure I'm not going to have similar issues with it. Especially getting it
+    working under TypeScript. A lot of Jest/Cypress interop issues, and a weird bug that seems to be the sort of library
+    error that I'd rather not have to deal with. I do have an example project that works fine with both, and I spent
+    a chunk of tonight comparing the two projects, but I can't see where my error is coming from. I've isolated behaviors
+    wherever possible.
+
+    One good thing I did was to turn on linting for my tests as well. That uncovered a lot of issues.
+
+    I'm hitting the goddamn easy button for once. No TS is Cypress tests. Too much of a headache for little benefit.
 
 
     Engineering problem so far:
