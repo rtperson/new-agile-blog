@@ -17,11 +17,10 @@ User Stories:
 
 
 Engineering Tasks:
-- Capture karma-test output in Jake (right now output only appears in Karma server window) // FOR LATER - capturing and redirecting stdout not working
 - Integrate JS and HTML template so that you don't need static JS files (not particularly testable)
     - look at tutorial about how to build MVC in Express
-* Move server environment variables to .env file
-- Replace Karma with Cypress?
+- Start server from Jake before you run client tests in Cypress
+- programmatically run Cypress from Javascript
 
 
 Current tasks:
@@ -42,9 +41,7 @@ Grunt or Gulp or Jake or NPM
     + wide adoption in industry
     - Bottom line: I may just build all my own tasks in Grunt if I'm obliged to use it.
 - Jake has the following pros and cons
-    - it seems to be broken right now on Windows 10
     - it has very low adoption in the industry
-    - does not support Promises (whaaaaat? This pushes the needle back heavily in the direction of Grunt)
     - using ESLint in conjunction with Jake seems to require writing your own reporter
     + TypeScript support is being worked on, and may be available in a future release.
     + That said, Jake seems to carry less cruft with it on install.
@@ -102,6 +99,8 @@ Karma or Cypress?
     One good thing I did was to turn on linting for my tests as well. That uncovered a lot of issues.
 
     I'm hitting the goddamn easy button for once. No TS is Cypress tests. Too much of a headache for little benefit.
+
+    That was easy. I now have Cypress integrated into my
 
 
     Engineering problem so far:

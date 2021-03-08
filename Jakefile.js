@@ -3,22 +3,24 @@
 
 const { task, desc } = require("jake");
 const fileList = require("filelist");
-const rmfr = require('rmfr');
+const rmfr = require("rmfr");
 const NODE_VERSION = "v14.15.0";
+const cy = require("cypress");
 
 desc("This is the default task");
-task("default", ["lint", "nodeVersion", "compile-ts", "compile-cypress-ts", "test-server"]);
+task("default", ["lint", "nodeVersion", "compile-ts", "test-server", "test-client"]);
 
 desc("Cleans all build files");
 task("clean", [], () => {
-    (async () => await rmfr("dist"))()
-        .then(() => { console.log("build files deleted") })
+    (async () => await rmfr("dist"))().then(() => {
+        console.log("build files deleted");
+    });
 });
 
 desc("lint all Typescript files");
 task(
     "lint",
-    async function() {
+    async function () {
         const cmd = ["eslint"].concat(getSourceFileServerList()).join(" ");
         jake.exec(
             cmd,
@@ -34,7 +36,7 @@ task(
 desc("This is the TypeScript compilation task");
 task(
     "compile-ts",
-    async function() {
+    async function () {
         const cmd = "tsc";
         console.log(cmd);
         jake.exec(
@@ -64,34 +66,62 @@ task(
     true,
 );
 
+desc("start-server");
+task("start-server", ["lint", "nodeVersion", "compile-ts"], async () => {
+    jake.exec(
+        "npx ts-node src/server/server.ts",
+        () => {
+            console.log("server started from jake");
+        },
+        {
+            printStderr: true,
+            printStdout: true,
+        },
+    );
+});
+
 desc("run all client-side tests");
 task(
     "test-client",
-    ["lint", "nodeVersion", "compile-ts"],
-    {concurrency: 2},
+    ["lint", "nodeVersion", "compile-ts", "start-server"],
     async () => {
-        let browsers = ["chrome", "edge"];
-        browsers.forEach(browser => {
-            return new Promise((resolve, reject) => {
-                jake.exec(
-                    "cypress run -b " + browser,
-                    () => {
-                        console.log(browser + " tests completed");
+        await cy
+            .run({
+                reporter: "junit",
+                browser: "chrome",
+                config: {
+                    baseUrl: "http://localhost:8081",
+                    video: false,
+                },
+            })
+            .then(() => {
+                cy.run({
+                    reporter: "junit",
+                    browser: "firefox",
+                    config: {
+                        baseUrl: "http://localhost:8081",
+                        video: false,
                     },
-                    { printStderr: true, printStdout: true },
-                );
+                }).then(() => {
+                    jake.exec(
+                        "npx ts-node -e 'require(\"src/server/server.ts\").stopServer()'",
+                        () => {
+                            console.log("server stopped from jake");
+                            process.exit();
+                        },
+                        {
+                            printStderr: true,
+                            printStdout: true,
+                        },
+                    );
+                });
             });
-        });
     },
     true,
 );
 
-
-
-
-
 desc("Integrate");
-task("integrate", ["default"], function() {
+task("integrate", ["default"], function () {
     console.log("1. Make sure 'git status' is clean.");
     console.log("2. Build on the integration box.");
     console.log("   a. Walk over to integration box.");
@@ -104,7 +134,7 @@ task("integrate", ["default"], function() {
 });
 
 desc("Ensure correct version of Node is present. Use 'strict=true' to require exact match");
-task("nodeVersion", [], function() {
+task("nodeVersion", [], function () {
     function failWithQualifier(qualifier) {
         fail(
             "Incorrect node version. Expected " +
@@ -140,7 +170,6 @@ function parseNodeVersion(description, versionString) {
     return [major, minor, bugfix];
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function getSourceFileServerList() {
     const files = new fileList.FileList();
     files.include("src/**/*.ts");
@@ -149,5 +178,3 @@ function getSourceFileServerList() {
     files.exclude("node_modules");
     return files.toArray();
 }
-
-
