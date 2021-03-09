@@ -69,7 +69,7 @@ task(
 desc("start-server");
 task("start-server", ["lint", "nodeVersion", "compile-ts"], async () => {
     jake.exec(
-        "npx ts-node src/server/server.ts",
+        "npx ts-node -e 'require(\"./src/server/server.ts\").startServer()'",
         () => {
             console.log("server started from jake");
         },
@@ -104,7 +104,7 @@ task(
                     },
                 }).then(() => {
                     jake.exec(
-                        "npx ts-node -e 'require(\"src/server/server.ts\").stopServer()'",
+                        "npx ts-node -e 'require(\"./src/server/server.ts\").stopServer()'",
                         () => {
                             console.log("server stopped from jake");
                             process.exit();

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1615174895426" clover="3.2.0">
-  <project timestamp="1615174895427" name="All files">
+<coverage generated="1615324043567" clover="3.2.0">
+  <project timestamp="1615324043567" name="All files">
     <metrics statements="19" coveredstatements="19" conditionals="2" coveredconditionals="1" methods="4" coveredmethods="4" elements="25" coveredelements="24" complexity="0" loc="19" ncloc="19" packages="1" files="1" classes="1"/>
-    <file name="app.ts" path="C:\Users\Roger\projects\javascript\new-agile-blog\src\server\app.ts">
+    <file name="app.ts" path="/Users/roger.turnau/OneDrive - Accenture/projects/javascript/new-agile-blog/src/server/app.ts">
       <metrics statements="19" coveredstatements="19" conditionals="2" coveredconditionals="1" methods="4" coveredmethods="4"/>
       <line num="1" count="1" type="stmt"/>
       <line num="3" count="1" type="stmt"/>
