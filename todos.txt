@@ -11,20 +11,18 @@ Minimum marketable features:
 
 User Stories:
 * a "hello world" server
-- a "hello world" client
-- support multiple browsers
-- An "about me" page
+* a "hello world" client
+* support multiple browsers
+* An "about me" page
 
 
 Engineering Tasks:
 - Integrate JS and HTML template so that you don't need static JS files (not particularly testable)
     - look at tutorial about how to build MVC in Express
-- Start server from Jake before you run client tests in Cypress
-- programmatically run Cypress from Javascript
 
 
 Current tasks:
-- Get Cypress Chalk error to resolve (or fall back to deprecate TS in Cypress)
+
 
 
 Grunt or Gulp or Jake or NPM
@@ -100,7 +98,7 @@ Karma or Cypress?
 
     I'm hitting the goddamn easy button for once. No TS is Cypress tests. Too much of a headache for little benefit.
 
-    That was easy. I now have Cypress integrated into my
+    That was easy. I now have Cypress integrated into my project. And I managed to get it testing browsers in turn. Woohoo!
 
 
     Engineering problem so far:
