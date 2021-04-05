@@ -1,5 +1,6 @@
 import express from "express";
 import { Express } from "express";
+import helmet from "helmet";
 import path from "path";
 import dotenv from "dotenv";
 
@@ -13,6 +14,21 @@ export function newApp(): Express {
     app.set("views", path.join(__dirname, "../views"));
     app.set("client", path.join(__dirname, "../client"));
     app.set("view engine", "ejs");
+    app.use(helmet());
+    app.use(helmet.noSniff());
+    app.use(
+        helmet.contentSecurityPolicy({
+            directives: {
+                "default-src": ["'self'"],
+                "script-src": ["'self'", "example.com"],
+                "object-src": ["'none'"],
+                "form-action": ["'self'"],
+                "frame-ancestors": ["'none'"],
+            },
+        }),
+    );
+
+    app.disable("x-powered-by");
     app.use(express.static("public"));
 
     app.get("/", (_, res: express.Response) => {

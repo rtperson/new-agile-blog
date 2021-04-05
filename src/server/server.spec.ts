@@ -53,4 +53,16 @@ describe("Server", () => {
         const result = await agent.get("/contact");
         expect(result.text).toContain("Hello from your new contact page");
     });
+
+    it("should not serve an X-Powered-By Header", async () => {
+        const result = await agent.get("/");
+        const poweredByHeader = result.header["x-powered-by"];
+        expect(poweredByHeader).toBeFalsy();
+    });
+
+    it("should serve an X-Frame-Options header set to DENY", async () => {
+        const result = await agent.get("/");
+        const corsHeader = result.header["x-frame-options"];
+        expect(corsHeader).toContain("SAMEORIGIN");
+    });
 });
