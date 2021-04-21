@@ -3,6 +3,7 @@ import { Express } from "express";
 import helmet from "helmet";
 import path from "path";
 import dotenv from "dotenv";
+import * as Layout from "../client/Layout";
 
 dotenv.config();
 const PORT = process.env.PORT;
@@ -32,7 +33,7 @@ export function newApp(): Express {
     app.use(express.static("public"));
 
     app.get("/", (_, res: express.Response) => {
-        res.render("index");
+        Layout.setLayout(res);
     });
 
     app.get("/contact", (_, res: express.Response) => {

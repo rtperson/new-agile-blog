@@ -80,6 +80,25 @@ task("start-server", ["lint", "nodeVersion", "compile-ts"], async () => {
     );
 });
 
+desc("stop server without running client-side tests")
+task(
+    "stop-server",
+    [],
+    async () => {
+        jake.exec(
+            "forever stop -c ts-node ./src/server/server.ts",
+            () => {
+                console.log("server stopped from jake");
+                process.exit();
+            },
+            {
+                printStderr: true,
+                printStdout: true,
+            },
+        );
+    }
+);
+
 desc("run all client-side tests");
 task(
     "test-client",
@@ -157,6 +176,10 @@ task("nodeVersion", [], function () {
     }
 });
 
+function stopServer() {
+
+}
+
 function parseNodeVersion(description, versionString) {
     const versionMatcher = /^v(\d+)\.(\d+)\.(\d+)$/; // v[major].[minor].[bugfix]
     const versionInfo = versionString.match(versionMatcher);
@@ -176,5 +199,6 @@ function getSourceFileServerList() {
     files.include("cypress/**/*.ts");
     // files.exclude("src/**/*.spec.ts");
     files.exclude("node_modules");
+    console.log(files.toArray().toString());
     return files.toArray();
 }
