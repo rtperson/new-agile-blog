@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="Mocha Tests" time="0.3120" tests="2" failures="0">
-  <testsuite name="Root Suite" timestamp="2021-04-19T22:03:31" tests="0" file="cypress/integration/sample_spec.js" time="0.0000" failures="0">
+<testsuites name="Mocha Tests" time="0.3450" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2021-04-22T14:35:19" tests="0" file="cypress/integration/sample_spec.js" time="0.0000" failures="0">
   </testsuite>
-  <testsuite name="My First Test" timestamp="2021-04-19T22:03:31" tests="2" time="0.3120" failures="0">
-    <testcase name="My First Test Can visit the local server" time="0.1750" classname="Can visit the local server">
+  <testsuite name="My First Test" timestamp="2021-04-22T14:35:19" tests="3" time="0.3450" failures="0">
+    <testcase name="My First Test Can visit the local server" time="0.1530" classname="Can visit the local server">
     </testcase>
-    <testcase name="My First Test Should find the title on the homepage" time="0.1370" classname="Should find the title on the homepage">
+    <testcase name="My First Test Should find the title on the homepage" time="0.1120" classname="Should find the title on the homepage">
+    </testcase>
+    <testcase name="My First Test should contain a header" time="0.0800" classname="should contain a header">
     </testcase>
   </testsuite>
 </testsuites>

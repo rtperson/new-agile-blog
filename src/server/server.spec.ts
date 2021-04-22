@@ -65,4 +65,9 @@ describe("Server", () => {
         const corsHeader = result.header["x-frame-options"];
         expect(corsHeader).toContain("SAMEORIGIN");
     });
+
+    it("should have a header section", async () => {
+        const result = await agent.get("/");
+        expect(result.text).toContain("Hi! Header section");
+    });
 });
