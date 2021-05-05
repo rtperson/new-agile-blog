@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello World, from your new Express Server</title>
-    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" href="css/tailwind.css">
 </head>
-<body>
+<body class="bg-blue-700">
     <%- include('header'); %>
     <p class="title"><%= title%></p>
+    <button class="bg-blue-500 text-white text-bold py-2 px-4 rounded hover:bg-blue-400">Find Friends</button>
 
 </body>
 </html>

@@ -18,9 +18,8 @@ User Stories:
 
 
 Engineering Tasks:
-- Integrate JS and HTML template so that you don't need static JS files (not particularly testable)
-    - look at tutorial about how to build MVC in Express
-- Break out stopping server as its own Jake task
+- Add CSS styling to layout (Tailwind? PostCSS?)
+- 
 
 
 Current tasks:

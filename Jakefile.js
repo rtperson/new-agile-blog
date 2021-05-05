@@ -8,7 +8,7 @@ const NODE_VERSION = "v14.15.0";
 const cy = require("cypress");
 
 desc("This is the default task");
-task("default", ["lint", "nodeVersion", "compile-ts", "test-server", "test-client"]);
+task("default", ["lint", "nodeVersion", "compile-ts", "build-styles", "test-server", "test-client"]);
 
 desc("Cleans all build files");
 task("clean", [], () => {
@@ -21,14 +21,17 @@ desc("lint all Typescript files");
 task(
     "lint",
     async function () {
-        const cmd = ["eslint"].concat(getSourceFileServerList()).join(" ");
-        jake.exec(
-            cmd,
-            () => {
-                console.log("all files linted");
-            },
-            { printStderr: true, printStdout: true },
-        );
+        return new Promise((resolve, reject) => {
+            const cmd = ["eslint"].concat(getSourceFileServerList()).join(" ");
+            jake.exec(
+                cmd,
+                () => {
+                    console.log("all files linted");
+                    resolve();
+                },
+                { printStderr: true, printStdout: true },
+            );
+        });
     },
     true,
 );
@@ -37,15 +40,37 @@ desc("This is the TypeScript compilation task");
 task(
     "compile-ts",
     async function () {
-        const cmd = "tsc";
-        console.log(cmd);
-        jake.exec(
-            cmd,
-            () => {
-                console.log("typescript compilation completed");
-            },
-            { printStderr: true, printStdout: true },
-        );
+        return new Promise((resolve, reject) => {
+            const cmd = "tsc";
+            console.log(cmd);
+            jake.exec(
+                cmd,
+                () => {
+                    console.log("typescript compilation completed");
+                },
+                {printStderr: true, printStdout: true},
+            );
+            resolve();
+        });
+    },
+    true,
+);
+
+desc("create CSS styles -- vanilla Tailwind right now")
+task(
+    "build-styles",
+    ["lint", "nodeVersion", "compile-ts"],
+    async () => {
+        return new Promise((resolve, reject) => {
+            jake.exec(
+                "tailwind build src/style/style.css -o public/css/tailwind.css",
+                () => {
+                    console.log("CSS Styles compiled");
+                },
+                {printStderr: true, printStdout: true},
+            );
+            resolve();
+        });
     },
     true,
 );
@@ -53,21 +78,24 @@ task(
 desc("run all server-side tests");
 task(
     "test-server",
-    ["lint", "nodeVersion", "compile-ts"],
+    ["lint", "nodeVersion", "compile-ts", "build-styles"],
     async () => {
-        jake.exec(
-            "jest --detectOpenHandles --forceExit --coverage",
-            () => {
-                console.log("server tests completed");
-            },
-            { printStderr: true, printStdout: true },
-        );
+        return new Promise((resolve, reject) => {
+            jake.exec(
+                "jest --detectOpenHandles --forceExit --coverage",
+                () => {
+                    console.log("server tests completed");
+                },
+                {printStderr: true, printStdout: true},
+            );
+            resolve();
+        });
     },
     true,
 );
 
 desc("start-server");
-task("start-server", ["lint", "nodeVersion", "compile-ts"], async () => {
+task("start-server", ["lint", "nodeVersion", "compile-ts", "build-styles"], async () => {
     jake.exec(
         "forever start -c ts-node ./src/server/server.ts",
         () => {
@@ -99,13 +127,44 @@ task(
     }
 );
 
+desc("stop and start server")
+task(
+    "cycle-server",
+    [],
+    async () => {
+        jake.exec(
+            "forever restart -c ts-node ./src/server/server.ts",
+            () => {
+                console.log("server restarted from jake");
+                process.exit();
+            },
+            {
+                printStderr: true,
+                printStdout: true,
+            },
+        );
+    }
+);
+
 desc("run all client-side tests");
 task(
     "test-client",
-    ["lint", "nodeVersion", "compile-ts", "start-server"],
+    ["lint", "nodeVersion", "compile-ts", "build-styles"],
     async () => {
-        await cy
-            .run({
+        return (new Promise((resolve, reject) => {
+            jake.exec(
+                "forever start -c ts-node ./src/server/server.ts",
+                () => {
+                    console.log("server started from jake");
+                },
+                {
+                    printStderr: true,
+                    printStdout: true,
+                },
+            )
+            resolve();
+        })).then( () => {
+            cy.run({
                 reporter: "junit",
                 browser: "chrome",
                 config: {
@@ -113,15 +172,17 @@ task(
                     video: false,
                 },
             })
-            .then(() => {
-                cy.run({
-                    reporter: "junit",
-                    browser: "firefox",
-                    config: {
-                        baseUrl: "http://localhost:8081",
-                        video: false,
-                    },
-                }).then(() => {
+        }).then( () => {
+                    cy.run({
+                            reporter: "junit",
+                            browser: "firefox",
+                            config: {
+                                baseUrl: "http://localhost:8081",
+                                video: false,
+                            },
+                        }
+                    );
+            }).finally(  () => {
                     jake.exec(
                         "forever stop -c ts-node ./src/server/server.ts",
                         () => {
@@ -132,11 +193,10 @@ task(
                             printStderr: true,
                             printStdout: true,
                         },
-                    );
-                });
-            });
-    },
-    true,
+                    )
+                }
+            );
+    }
 );
 
 desc("Integrate");
@@ -176,9 +236,6 @@ task("nodeVersion", [], function () {
     }
 });
 
-function stopServer() {
-
-}
 
 function parseNodeVersion(description, versionString) {
     const versionMatcher = /^v(\d+)\.(\d+)\.(\d+)$/; // v[major].[minor].[bugfix]
