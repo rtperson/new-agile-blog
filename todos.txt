@@ -19,11 +19,11 @@ User Stories:
 
 Engineering Tasks:
 - Add CSS styling to layout (Tailwind? PostCSS?)
-- 
+- In learning about Tailwind, I took a side-trip into good web design.
 
 
 Current tasks:
-
+- Create a minimal CSS styling for my page (container, header, and navbar)
 
 
 Grunt or Gulp or Jake or NPM
