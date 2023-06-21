@@ -39,6 +39,7 @@
     "jest-cli": "^26.6.1",
     "jest-runner-tsc": "^1.6.0",
     "mocha": "^8.2.0",
+    "path-parse": ">=1.0.7",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
     "rmfr": "^2.0.0",
@@ -47,7 +48,6 @@
     "ts-jest": "^26.4.2",
     "ts-node": "^9.1.1",
     "typescript": "^4.0.3",
-    "ws": ">=7.4.6",
-    "path-parse": ">=1.0.7"
+    "ws": ">=7.4.6"
   }
 }

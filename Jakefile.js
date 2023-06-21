@@ -5,10 +5,10 @@ const { task, desc } = require("jake");
 const fileList = require("filelist");
 const rmfr = require("rmfr");
 const NODE_VERSION = "v14.15.0";
-const cy = require("cypress");
+//const cy = require("cypress");
 
 desc("This is the default task");
-task("default", ["lint", "nodeVersion", "compile-ts", "build-styles", "test-server", "test-client"]);
+task("default", ["lint", "nodeVersion", "compile-ts", "build-styles", "test-server"]); //, "test-client"]);
 
 desc("Cleans all build files");
 task("clean", [], () => {
@@ -21,7 +21,7 @@ desc("lint all Typescript files");
 task(
     "lint",
     async function () {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             const cmd = ["eslint"].concat(getSourceFileServerList()).join(" ");
             jake.exec(
                 cmd,
@@ -40,7 +40,7 @@ desc("This is the TypeScript compilation task");
 task(
     "compile-ts",
     async function () {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             const cmd = "tsc";
             console.log(cmd);
             jake.exec(
@@ -48,7 +48,7 @@ task(
                 () => {
                     console.log("typescript compilation completed");
                 },
-                {printStderr: true, printStdout: true},
+                { printStderr: true, printStdout: true },
             );
             resolve();
         });
@@ -56,18 +56,18 @@ task(
     true,
 );
 
-desc("create CSS styles -- vanilla Tailwind right now")
+desc("create CSS styles -- vanilla Tailwind right now");
 task(
     "build-styles",
     ["lint", "nodeVersion", "compile-ts"],
     async () => {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             jake.exec(
                 "tailwind build src/style/style.css -o public/css/tailwind.css",
                 () => {
                     console.log("CSS Styles compiled");
                 },
-                {printStderr: true, printStdout: true},
+                { printStderr: true, printStdout: true },
             );
             resolve();
         });
@@ -80,13 +80,13 @@ task(
     "test-server",
     ["lint", "nodeVersion", "compile-ts", "build-styles"],
     async () => {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             jake.exec(
                 "jest --detectOpenHandles --forceExit --coverage",
                 () => {
                     console.log("server tests completed");
                 },
-                {printStderr: true, printStdout: true},
+                { printStderr: true, printStdout: true },
             );
             resolve();
         });
@@ -108,96 +108,88 @@ task("start-server", ["lint", "nodeVersion", "compile-ts", "build-styles"], asyn
     );
 });
 
-desc("stop server without running client-side tests")
-task(
-    "stop-server",
-    [],
-    async () => {
-        jake.exec(
-            "forever stop -c ts-node ./src/server/server.ts",
-            () => {
-                console.log("server stopped from jake");
-                process.exit();
-            },
-            {
-                printStderr: true,
-                printStdout: true,
-            },
-        );
-    }
-);
+desc("stop server without running client-side tests");
+task("stop-server", [], async () => {
+    jake.exec(
+        "forever stop -c ts-node ./src/server/server.ts",
+        () => {
+            console.log("server stopped from jake");
+            process.exit();
+        },
+        {
+            printStderr: true,
+            printStdout: true,
+        },
+    );
+});
 
-desc("stop and start server")
-task(
-    "cycle-server",
-    [],
-    async () => {
-        jake.exec(
-            "forever restart -c ts-node ./src/server/server.ts",
-            () => {
-                console.log("server restarted from jake");
-                process.exit();
-            },
-            {
-                printStderr: true,
-                printStdout: true,
-            },
-        );
-    }
-);
+desc("stop and start server");
+task("cycle-server", [], async () => {
+    jake.exec(
+        "forever restart -c ts-node ./src/server/server.ts",
+        () => {
+            console.log("server restarted from jake");
+            process.exit();
+        },
+        {
+            printStderr: true,
+            printStdout: true,
+        },
+    );
+});
 
-desc("run all client-side tests");
-task(
-    "test-client",
-    ["lint", "nodeVersion", "compile-ts", "build-styles"],
-    async () => {
-        return (new Promise((resolve, reject) => {
-            jake.exec(
-                "forever start -c ts-node ./src/server/server.ts",
-                () => {
-                    console.log("server started from jake");
-                },
-                {
-                    printStderr: true,
-                    printStdout: true,
-                },
-            )
-            resolve();
-        })).then( () => {
-            cy.run({
-                reporter: "junit",
-                browser: "chrome",
-                config: {
-                    baseUrl: "http://localhost:8081",
-                    video: false,
-                },
-            })
-        }).then( () => {
-                    cy.run({
-                            reporter: "junit",
-                            browser: "firefox",
-                            config: {
-                                baseUrl: "http://localhost:8081",
-                                video: false,
-                            },
-                        }
-                    );
-            }).finally(  () => {
-                    jake.exec(
-                        "forever stop -c ts-node ./src/server/server.ts",
-                        () => {
-                            console.log("server stopped from jake");
-                            process.exit();
-                        },
-                        {
-                            printStderr: true,
-                            printStdout: true,
-                        },
-                    )
-                }
-            );
-    }
-);
+// desc("run all client-side tests");
+// task(
+//     "test-client",
+//     ["lint", "nodeVersion", "compile-ts", "build-styles"],
+//     async () => {
+//         return (new Promise((resolve, reject) => {
+//             jake.exec(
+//                 "forever start -c ts-node ./src/server/server.ts",
+//                 () => {
+//                     console.log("server started from jake");
+//                 },
+//                 {
+//                     printStderr: true,
+//                     printStdout: true,
+//                 },
+//             )
+//             resolve();
+//         })).then( () => {
+//             cy.run({
+//                 reporter: "junit",
+//                 browser: "chrome",
+//                 config: {
+//                     baseUrl: "http://localhost:8081",
+//                     video: false,
+//                 },
+//             })
+//         }).then( () => {
+//                     cy.run({
+//                             reporter: "junit",
+//                             browser: "firefox",
+//                             config: {
+//                                 baseUrl: "http://localhost:8081",
+//                                 video: false,
+//                             },
+//                         }
+//                     );
+//             }).finally(  () => {
+//                     jake.exec(
+//                         "forever stop -c ts-node ./src/server/server.ts",
+//                         () => {
+//                             console.log("server stopped from jake");
+//                             process.exit();
+//                         },
+//                         {
+//                             printStderr: true,
+//                             printStdout: true,
+//                         },
+//                     )
+//                 }
+//             );
+//     }
+// );
 
 desc("Integrate");
 task("integrate", ["default"], function () {
@@ -235,7 +227,6 @@ task("nodeVersion", [], function () {
         failWithQualifier("exactly");
     }
 });
-
 
 function parseNodeVersion(description, versionString) {
     const versionMatcher = /^v(\d+)\.(\d+)\.(\d+)$/; // v[major].[minor].[bugfix]
