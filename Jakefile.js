@@ -4,8 +4,9 @@
 const { task, desc } = require("jake");
 const fileList = require("filelist");
 const rmfr = require("rmfr");
-const NODE_VERSION = "v14.15.0";
-//const cy = require("cypress");
+//const NODE_VERSION = "v14.15.0";
+const NODE_VERSION = "v20.11.1";
+const cy = require("cypress");
 
 desc("This is the default task");
 task("default", ["lint", "nodeVersion", "compile-ts", "build-styles", "test-server"]); //, "test-client"]);
@@ -138,58 +139,45 @@ task("cycle-server", [], async () => {
     );
 });
 
-// desc("run all client-side tests");
-// task(
-//     "test-client",
-//     ["lint", "nodeVersion", "compile-ts", "build-styles"],
-//     async () => {
-//         return (new Promise((resolve, reject) => {
-//             jake.exec(
-//                 "forever start -c ts-node ./src/server/server.ts",
-//                 () => {
-//                     console.log("server started from jake");
-//                 },
-//                 {
-//                     printStderr: true,
-//                     printStdout: true,
-//                 },
-//             )
-//             resolve();
-//         })).then( () => {
-//             cy.run({
-//                 reporter: "junit",
-//                 browser: "chrome",
-//                 config: {
-//                     baseUrl: "http://localhost:8081",
-//                     video: false,
-//                 },
-//             })
-//         }).then( () => {
-//                     cy.run({
-//                             reporter: "junit",
-//                             browser: "firefox",
-//                             config: {
-//                                 baseUrl: "http://localhost:8081",
-//                                 video: false,
-//                             },
-//                         }
-//                     );
-//             }).finally(  () => {
-//                     jake.exec(
-//                         "forever stop -c ts-node ./src/server/server.ts",
-//                         () => {
-//                             console.log("server stopped from jake");
-//                             process.exit();
-//                         },
-//                         {
-//                             printStderr: true,
-//                             printStdout: true,
-//                         },
-//                     )
-//                 }
-//             );
-//     }
-// );
+desc("run all client-side tests");
+task(
+    "test-client",
+    ["lint", "nodeVersion", "compile-ts", "build-styles", "start-server"],
+    async () => {
+        return new Promise(
+            () => {
+                cy.run({
+                    reporter: "junit",
+                    browser: "chrome",
+                    config: {
+                        baseUrl: "http://localhost:8081",
+                        video: false,
+                    },
+                }).then(() => {
+                    jake.exec(
+                        "forever stopall",
+                        () => {
+                            console.log("stopped all servers");
+                            process.exit();
+                        },
+                        {
+                            printStderr: true,
+                            printStdout: true,
+                        },
+                    );
+                });
+            },
+            () => {
+                console.log("successfully ran chrome tests");
+            },
+            {
+                printStderr: true,
+                printStdout: true,
+            },
+        );
+    },
+);
+
 
 desc("Integrate");
 task("integrate", ["default"], function () {
