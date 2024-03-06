@@ -98,7 +98,8 @@ task(
 desc("start-server");
 task("start-server", ["lint", "nodeVersion", "compile-ts", "build-styles"], async () => {
     jake.exec(
-        "forever start -c ts-node ./src/server/server.ts",
+        //"forever start -c ts-node ./src/server/server.ts",
+        "pm2 start ts-node -- -P tsconfig.json ./src/server/server.ts",
         () => {
             console.log("server started from jake");
         },
@@ -112,7 +113,8 @@ task("start-server", ["lint", "nodeVersion", "compile-ts", "build-styles"], asyn
 desc("stop server without running client-side tests");
 task("stop-server", [], async () => {
     jake.exec(
-        "forever stop -c ts-node ./src/server/server.ts",
+        //"forever stop -c ts-node ./src/server/server.ts",
+        "pm2 stop ts-node",
         () => {
             console.log("server stopped from jake");
             process.exit();
@@ -177,7 +179,6 @@ task(
         );
     },
 );
-
 
 desc("Integrate");
 task("integrate", ["default"], function () {
