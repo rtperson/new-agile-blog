@@ -1,5 +1,5 @@
 TN:
-SF:src/client/Layout.ts
+SF:src\client\Layout.ts
 FN:5,setLayout
 FNF:1
 FNH:1
@@ -13,7 +13,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src/server/app.ts
+SF:src\server\app.ts
 FN:11,newApp
 FN:35,(anonymous_8)
 FN:39,(anonymous_9)

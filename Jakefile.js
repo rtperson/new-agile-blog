@@ -5,11 +5,12 @@ const { task, desc } = require("jake");
 const fileList = require("filelist");
 const rmfr = require("rmfr");
 //const NODE_VERSION = "v14.15.0";
-const NODE_VERSION = "v20.11.1";
+const NODE_VERSION = "v20.15.1";
 const cy = require("cypress");
+const fs = require("fs-extra");
 
 desc("This is the default task");
-task("default", ["lint", "nodeVersion", "compile-ts", "build-styles", "test-server"]); //, "test-client"]);
+task("default", ["lint", "nodeVersion", "compile-ts", "copy-views", "build-styles", "test-server"]); //, "test-client"]);
 
 desc("Cleans all build files");
 task("clean", [], () => {
@@ -42,7 +43,7 @@ task(
     "compile-ts",
     async function () {
         return new Promise((resolve) => {
-            const cmd = "tsc";
+            const cmd = "npx tsc";
             console.log(cmd);
             jake.exec(
                 cmd,
@@ -64,7 +65,7 @@ task(
     async () => {
         return new Promise((resolve) => {
             jake.exec(
-                "tailwind build src/style/style.css -o public/css/tailwind.css",
+                "tailwind build -i src/style/style.css -o dist/src/css/tailwind.css",
                 () => {
                     console.log("CSS Styles compiled");
                 },
@@ -76,10 +77,24 @@ task(
     true,
 );
 
+desc("Copy views to dist folder");
+task("copy-views", ["lint", "nodeVersion", "compile-ts"], async function () {
+    console.log("Starting copy-views");
+
+    try {
+        await fs.ensureDir("./dist/src");
+        await fs.copy("./src/views", "./dist/src/views");
+        console.log("Views copied to dist/src/views");
+    } catch (err) {
+        console.error("copy-views failed:", err);
+        throw err;
+    }
+});
+
 desc("run all server-side tests");
 task(
     "test-server",
-    ["lint", "nodeVersion", "compile-ts", "build-styles"],
+    ["lint", "nodeVersion", "compile-ts", "copy-views", "build-styles"],
     async () => {
         return new Promise((resolve) => {
             jake.exec(
@@ -98,8 +113,7 @@ task(
 desc("start-server");
 task("start-server", ["lint", "nodeVersion", "compile-ts", "build-styles"], async () => {
     jake.exec(
-        //"forever start -c ts-node ./src/server/server.ts",
-        "pm2 start ts-node -- -P tsconfig.json ./src/server/server.ts",
+        "pm2 start ecosystem.config.js",
         () => {
             console.log("server started from jake");
         },
@@ -113,8 +127,7 @@ task("start-server", ["lint", "nodeVersion", "compile-ts", "build-styles"], asyn
 desc("stop server without running client-side tests");
 task("stop-server", [], async () => {
     jake.exec(
-        //"forever stop -c ts-node ./src/server/server.ts",
-        "pm2 stop ts-node",
+        "pm2 stop ecosystem.config.js",
         () => {
             console.log("server stopped from jake");
             process.exit();
@@ -129,7 +142,7 @@ task("stop-server", [], async () => {
 desc("stop and start server");
 task("cycle-server", [], async () => {
     jake.exec(
-        "forever restart -c ts-node ./src/server/server.ts",
+        "pm2 restart ecosystem.config.js",
         () => {
             console.log("server restarted from jake");
             process.exit();
@@ -144,7 +157,7 @@ task("cycle-server", [], async () => {
 desc("run all client-side tests");
 task(
     "test-client",
-    ["lint", "nodeVersion", "compile-ts", "build-styles", "start-server"],
+    ["lint", "nodeVersion", "compile-ts", "copy-views", "build-styles", "start-server"],
     async () => {
         return new Promise(
             () => {
@@ -157,7 +170,7 @@ task(
                     },
                 }).then(() => {
                     jake.exec(
-                        "forever stopall",
+                        "pm2 stop ecosystem.config.js",
                         () => {
                             console.log("stopped all servers");
                             process.exit();
@@ -233,7 +246,7 @@ function parseNodeVersion(description, versionString) {
 function getSourceFileServerList() {
     const files = new fileList.FileList();
     files.include("src/**/*.ts");
-    files.include("cypress/**/*.ts");
+    //files.include("cypress/**/*.ts");
     // files.exclude("src/**/*.spec.ts");
     files.exclude("node_modules");
     console.log(files.toArray().toString());

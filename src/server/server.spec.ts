@@ -7,18 +7,22 @@ describe("Server", () => {
     let app: Express;
     let server: http.Server, agent: request.SuperTest<request.Test>;
 
-    beforeEach((done) => {
+    beforeEach(async () => {
         app = newApp();
-        server = app.listen(4000, () => {
-            // if (err) return done(err);
-
-            agent = request.agent(server); // since the application is already listening, it should use the allocated port
-            done();
+        await new Promise<void>((resolve) => {
+            server = app.listen(4000, () => {
+                agent = request.agent(server); // since the application is already listening, it should use the allocated port
+                resolve();
+            });
         });
     });
 
-    afterEach((done) => {
-        return server && server.close(done);
+    afterEach(async () => {
+        if (server) {
+            await new Promise<void>((resolve, reject) => {
+                server.close((err) => (err ? reject(err) : resolve()));
+            });
+        }
     });
 
     it("should be truthy", () => {

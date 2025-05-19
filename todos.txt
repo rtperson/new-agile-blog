@@ -18,6 +18,7 @@ User Stories:
 
 
 Engineering Tasks:
+- Move test files to their own directory -- they should not be included in /dist
 - Add CSS styling to layout (Tailwind? PostCSS?)
 - In learning about Tailwind, I took a side-trip into good web design.
 
